@@ -15,6 +15,10 @@ Parameters:
   S3TargetPath:
     Type: String
     Description: 'S3 path for the crawler to scan'
+  GlueCrawlerRoleArn:
+    Type: String
+    Description: 'Glue Crawler IAM Role Arn'
+
 
 Resources:
 
@@ -22,11 +26,10 @@ Resources:
     Type: AWS::Glue::Crawler
     Properties:
       Name:
-        Name:
          Fn::Join:
           - "-"
           - [ "tpgt", !Ref DomainName, !Ref EnvType, "landing", "crawler"]       
-      Role: !ImportValue GlueCrawlerRoleArn
+      Role: !Ref GlueCrawlerRoleArn
       DatabaseName: !Ref DatabaseName
       # Configuration: 
       #     "LakeFormationConfiguration": {

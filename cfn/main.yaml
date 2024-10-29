@@ -56,6 +56,7 @@ Resources:
         DomainName: !Ref DomainName
         DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
         S3TargetPath: !Ref S3TargetPath
+        GlueCrawlerRoleArn: !ImportValue GlueCrawlerRoleArn
 Outputs:
   DatabaseName:
     Description: 'Name of the Glue Database'
