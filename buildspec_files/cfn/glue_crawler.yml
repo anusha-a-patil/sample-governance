@@ -1,0 +1,47 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'AWS Glue Crawler Nested Stack'
+
+Parameters:
+  EnvType:
+    Type: String
+    Default: "dev"
+    Description: The environment type (e.g., prod, dev)
+  DomainName:
+    Type: String
+    Description: The name of the domain
+  DatabaseName:
+    Type: String
+    Description: 'Name of the Glue Database to store the crawled data'
+  S3TargetPath:
+    Type: String
+    Description: 'S3 path for the crawler to scan'
+
+Resources:
+
+  GlueCrawler:
+    Type: AWS::Glue::Crawler
+    Properties:
+      Name:
+        Name:
+         Fn::Join:
+          - "-"
+          - [ "tpgt", !Ref DomainName, !Ref EnvType, "landing", "crawler"]       
+      Role: !ImportValue GlueCrawlerRoleArn
+      DatabaseName: !Ref DatabaseName
+      # Configuration: 
+      #     "LakeFormationConfiguration": {
+      #       "UseLakeFormationCredentials": true,
+      #       "AccountId": "${ProducerAccountId}"
+      #     }      
+      Targets:
+        S3Targets:
+          - Path: !Ref S3TargetPath
+      #     - Path: !Sub 's3://${S3TargetPath}
+      # SchemaChangePolicy:
+      #   UpdateBehavior: "UPDATE_IN_DATABASE"
+      #   DeleteBehavior: "LOG"
+
+Outputs:
+  CrawlerName:
+    Description: 'Name of the created Glue Crawler'
+    Value: !Ref GlueCrawler

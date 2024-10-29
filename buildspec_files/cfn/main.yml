@@ -1,0 +1,68 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create an S3 bucket
+
+Parameters:
+  EnvType:
+    Type: String
+    Default: "dev"
+    Description: The environment type (e.g., prod, dev)
+  DomainName:
+    Type: String
+    Description: The name of the domain
+
+#IAMRole Parameters
+  IAMRolePath:
+    Type: String
+    Description: IAM Role yaml path
+
+#GlueDB Parameters
+  GlueDBPath:
+    Type: String
+    Description: Database yaml path    
+
+#Crawler Parameters
+  S3TargetPath:
+    Type: String
+    Description: Crawler yaml path
+    Default: "s3://landing-console/"    
+  GlueCrawlerPath:
+    Type: String
+    Description: Crawler yaml path 
+
+Resources:
+  IAMRoles:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref IAMRolePath
+      Parameters:
+        EnvType: !Ref EnvType
+        DomainName: !Ref DomainName
+
+  GlueDatabase:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref GlueDBPath
+      Parameters:
+        EnvType: !Ref EnvType
+        DomainName: !Ref DomainName
+
+  GlueCrawler:
+    Type: AWS::CloudFormation::Stack
+    DependsOn: IAMRoles
+    Properties:
+      TemplateURL: !Ref GlueCrawlerPath
+      Parameters:
+        EnvType: !Ref EnvType
+        DomainName: !Ref DomainName
+        DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
+        S3TargetPath: !Ref S3TargetPath
+Outputs:
+  DatabaseName:
+    Description: 'Name of the Glue Database'
+    Value:  !GetAtt GlueDatabase.Outputs.DatabaseName
+  CrawlerName:
+    Description: 'Name of the created Glue Crawler'
+    Value:  !GetAtt GlueCrawler.Outputs.CrawlerName
+  IAMRoleArn:
+    Description: 'Glue Crawler IAM Role'
+    Value:  !ImportValue GlueCrawlerRole
