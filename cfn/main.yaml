@@ -66,4 +66,6 @@ Outputs:
     Value:  !GetAtt GlueCrawler.Outputs.CrawlerName
   GlueCrawlerRoleArn:
     Description: 'Glue Crawler IAM Role'
-    Value:  !ImportValue GlueCrawlerRoleArn
+    Value: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn
+    Export:
+      Name: GlueCrawlerRoleArn
