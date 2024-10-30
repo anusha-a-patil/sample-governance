@@ -14,7 +14,7 @@ Resources:
     Type: AWS::LakeFormation::DataLakeSettings
     Properties:
       Admins: 
-        - DataLakePrincipalIdentifier: !Sub 'AWS:${AWS::AccountId}'
+        - DataLakePrincipalIdentifier: !Sub 'arn:aws:iam::${AWS::AccountId}:root'
         - DataLakePrincipalIdentifier: !Sub 'arn:aws:iam::${AWS::AccountId}:role/service-role/${CodeBuildRole}'
       CreateDatabaseDefaultPermissions: []  # Empty list to uncheck default settings
       CreateTableDefaultPermissions: []  # Empty list to uncheck default settings
