@@ -5,6 +5,9 @@ Parameters:
   DataLakeBucketName:
     Type: String
     Description: 'Name of the S3 bucket to use as the data lake'
+  CodeBuildRole:
+    Type: String
+    Description: 'Code Build Role Which is used to build all CF reosurces'    
 
 Resources:
   LakeFormationDataLakeSettings:
@@ -12,6 +15,7 @@ Resources:
     Properties:
       Admins: 
         - DataLakePrincipalIdentifier: !Sub 'AWS:${AWS::AccountId}'
+        - DataLakePrincipalIdentifier: !Sub arn:aws:iam::${AWS::AccountId}:role/service-role/${CodeBuildRole}
       CreateDatabaseDefaultPermissions: []  # Empty list to uncheck default settings
       CreateTableDefaultPermissions: []  # Empty list to uncheck default settings
 
