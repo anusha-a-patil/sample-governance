@@ -29,16 +29,21 @@ phases:
         gluecrawlerfilename="glue_crawler.yaml"
         gluecrawlerfile=$CODEBUILD_SRC_DIR/cfn/"${gluecrawlerfilename}"
         echo $gluecrawlerfile
+        lffilename="lakeformation.yaml"
+        lffile=$CODEBUILD_SRC_DIR/cfn/"${lffilename}"
+        echo $lffile        
         aws s3 cp $iamrolefile s3://mycicd-bucket-ap2/cicd-files/
         aws s3 cp $gluedbfile s3://mycicd-bucket-ap2/cicd-files/
         aws s3 cp $gluecrawlerfile s3://mycicd-bucket-ap2/cicd-files/
+        aws s3 cp $lffile s3://mycicd-bucket-ap2/cicd-files/        
         iamroleurl=https://s3.amazonaws.com/mycicd-bucket-ap2/cicd-files/iam_roles.yaml
         GlueDBurl=https://s3.amazonaws.com/mycicd-bucket-ap2/cicd-files/glue_database.yaml
         GlueCrawlerurl=https://s3.amazonaws.com/mycicd-bucket-ap2/cicd-files/glue_crawler.yaml
+        lfurl=https://s3.amazonaws.com/mycicd-bucket-ap2/cicd-files/lakeformation.yaml
         aws cloudformation deploy \
           --template-file $cfnfile \
           --stack-name tpg-stack \
-          --parameter-overrides EnvType="${env}" DomainName="${domain}" IAMRolePath="${iamroleurl}" GlueDBPath="${GlueDBurl}" GlueCrawlerPath="${GlueCrawlerurl}" \
+          --parameter-overrides EnvType="${env}" DomainName="${domain}" IAMRolePath="${iamroleurl}" GlueDBPath="${GlueDBurl}" GlueCrawlerPath="${GlueCrawlerurl}" lfPath="${lfurl}" \
           --capabilities CAPABILITY_IAM CAPABILITY_NAMED_IAM
   post_build:
     commands:
