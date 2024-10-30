@@ -73,7 +73,6 @@ Resources:
       TemplateURL: !Ref lfPath
       Parameters:
         DataLakeBucketName: !Ref DataLakeBucket
-        DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
         CodeBuildRole: !Ref CodeBuildRole
 
 Outputs:
