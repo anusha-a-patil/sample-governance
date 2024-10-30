@@ -39,7 +39,7 @@ Resources:
       Targets:
         S3Targets:
           # - Path: !Ref S3TargetPath
-           - Path: !Sub 's3://${S3Target}
+           - Path: !Sub 's3://${S3Target}'
       # SchemaChangePolicy:
       #   UpdateBehavior: "UPDATE_IN_DATABASE"
       #   DeleteBehavior: "LOG"
