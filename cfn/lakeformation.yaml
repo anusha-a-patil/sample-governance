@@ -1,0 +1,22 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: 'Nested stack for creating AWS Lake Formation resources'
+
+Parameters:
+  DataLakeBucketName:
+    Type: String
+    Description: 'Name of the S3 bucket to use as the data lake'
+
+Resources:
+  LakeFormationDataLakeSettings:
+    Type: AWS::LakeFormation::DataLakeSettings
+    Properties:
+      Admins: 
+        - DataLakePrincipalIdentifier: !Sub 'AWS:${AWS::AccountId}'
+      CreateDatabaseDefaultPermissions: []  # Empty list to uncheck default settings
+      CreateTableDefaultPermissions: []  # Empty list to uncheck default settings
+
+  LakeFormationResource:
+    Type: AWS::LakeFormation::Resource
+    Properties:
+      ResourceArn: !Sub 'arn:aws:s3:::${DataLakeBucketName}'
+      UseServiceLinkedRole: true

@@ -12,9 +12,9 @@ Parameters:
   DatabaseName:
     Type: String
     Description: 'Name of the Glue Database to store the crawled data'
-  S3TargetPath:
+  S3Target:
     Type: String
-    Description: 'S3 path for the crawler to scan'
+    Description: 'S3 bucket for the crawler to scan'
   GlueCrawlerRoleArn:
     Type: String
     Description: 'Glue Crawler IAM Role Arn'
@@ -28,7 +28,7 @@ Resources:
       Name:
          Fn::Join:
           - "-"
-          - [ "tpgt", !Ref DomainName, !Ref EnvType, "landing", "crawler"]       
+          - [ "tpt", !Ref DomainName, !Ref EnvType, "landing", "crawler"]       
       Role: !Ref GlueCrawlerRoleArn
       DatabaseName: !Ref DatabaseName
       # Configuration: 
@@ -38,8 +38,8 @@ Resources:
       #     }      
       Targets:
         S3Targets:
-          - Path: !Ref S3TargetPath
-      #     - Path: !Sub 's3://${S3TargetPath}
+          # - Path: !Ref S3TargetPath
+           - Path: !Sub 's3://${S3Target}
       # SchemaChangePolicy:
       #   UpdateBehavior: "UPDATE_IN_DATABASE"
       #   DeleteBehavior: "LOG"

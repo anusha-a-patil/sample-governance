@@ -19,7 +19,7 @@ Resources:
         Name:
          Fn::Join:
           - "-"
-          - [ "tpgt", !Ref DomainName, !Ref EnvType, "landing", "db"]        
+          - [ "tpt", !Ref DomainName, !Ref EnvType, "landing", "db"]        
         Description: "Database for storing metadata from Glue Crawler"
 
 Outputs:

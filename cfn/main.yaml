@@ -20,14 +20,19 @@ Parameters:
     Type: String
     Description: Database yaml path    
 
-#Crawler Parameters
-  S3TargetPath:
-    Type: String
-    Description: Crawler yaml path
-    Default: "s3://landing-console/"    
+#Crawler Parameters   
   GlueCrawlerPath:
     Type: String
-    Description: Crawler yaml path 
+    Description: Crawler yaml path
+
+#LF Parameters
+  LFStackUrl:
+    Type: String
+    Description: 'LF Stack S3 URL of the nested stack template'
+  DataLakeBucket:
+    Type: String
+    Description: Crawler yaml path
+    Default: "landing-console-2"
 
 Resources:
   IAMRoles:
@@ -55,8 +60,17 @@ Resources:
         EnvType: !Ref EnvType
         DomainName: !Ref DomainName
         DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
-        S3TargetPath: !Ref S3TargetPath
-        GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn 
+        S3Target: !Ref DataLakeBucket
+        GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn
+
+  LakeFormationStack:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref LFStackUrl
+      Parameters:
+        DataLakeBucketName: !Ref DataLakeBucket
+        DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
+
 Outputs:
   DatabaseName:
     Description: 'Name of the Glue Database'
