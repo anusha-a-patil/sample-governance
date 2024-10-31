@@ -37,7 +37,7 @@ Resources:
       Resource:
         DataLocation:
           CatalogId: !Ref AWS::AccountId  # Account ID where S3 bucket is registered
-          S3Resource: !Sub 'arn:aws:s3:::${DataLakeBucketName}'
+          ResourceArn: !Sub 'arn:aws:s3:::${DataLakeBucketName}'
       Principal:
         DataLakePrincipalIdentifier: !Ref GlueCrawlerRoleArn
       Permissions:
