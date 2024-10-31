@@ -34,8 +34,8 @@ Resources:
       Role: !Ref GlueCrawlerRoleArn
       DatabaseName: !Ref DatabaseName
       LakeFormationConfiguration: 
-        UseLakeFormationCredentials: true,
-        AccountId: !Ref ProducerAccount       
+        UseLakeFormationCredentials: true
+        AccountId: !Ref ProducerAccount
       Targets:
         S3Targets:
            - Path: !Sub 's3://${S3Target}'      
