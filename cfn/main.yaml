@@ -26,7 +26,8 @@ Parameters:
     Description: Crawler yaml path
   ProducerAccount:
     Type: String
-    Description: 'Producer Account ID'     
+    Description: 'Producer Account ID'
+    Default: "020392763922"    
 
 #LF Parameters
   lfPath:
