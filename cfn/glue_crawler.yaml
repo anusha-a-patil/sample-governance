@@ -18,7 +18,9 @@ Parameters:
   GlueCrawlerRoleArn:
     Type: String
     Description: 'Glue Crawler IAM Role Arn'
-
+  ProducerAccount:
+    Type: String
+    Description: 'Producer Account ID' 
 
 Resources:
 
@@ -31,15 +33,14 @@ Resources:
           - [ "tpt", !Ref DomainName, !Ref EnvType, "landing", "crawler"]       
       Role: !Ref GlueCrawlerRoleArn
       DatabaseName: !Ref DatabaseName
-      # Configuration: 
-      #     "LakeFormationConfiguration": {
-      #       "UseLakeFormationCredentials": true,
-      #       "AccountId": "${ProducerAccountId}"
-      #     }      
+      Configuration: 
+          "LakeFormationConfiguration": {
+            "UseLakeFormationCredentials": true,
+            "AccountId": !Ref ProducerAccount
+          }      
       Targets:
         S3Targets:
-          # - Path: !Ref S3TargetPath
-           - Path: !Sub 's3://${S3Target}'
+           - Path: !Sub 's3://${S3Target}'      
       # SchemaChangePolicy:
       #   UpdateBehavior: "UPDATE_IN_DATABASE"
       #   DeleteBehavior: "LOG"

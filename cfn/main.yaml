@@ -24,6 +24,9 @@ Parameters:
   GlueCrawlerPath:
     Type: String
     Description: Crawler yaml path
+  ProducerAccount:
+    Type: String
+    Description: 'Producer Account ID'     
 
 #LF Parameters
   lfPath:
@@ -68,6 +71,7 @@ Resources:
         DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
         S3Target: !Ref DataLakeBucket
         GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn
+        ProducerAccount: !Ref ProducerAccount
 
   LakeFormationStack:
     Type: AWS::CloudFormation::Stack
