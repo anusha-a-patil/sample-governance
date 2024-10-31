@@ -30,14 +30,14 @@ Resources:
       UseServiceLinkedRole: true
 
 # Grant Data Location permissions to the crawler role
-DataLocationPermissions:
-    Type: AWS::LakeFormation::Permissions
+  DataLocationPermissions:
+    Type: AWS::LakeFormation::PrincipalPermissions
     DependsOn: LakeFormationResource    
     Properties:
       Resource:
         DataLocationResource:
-          CatalogId: !Ref AWS::AccountId  # The account ID where the Data Catalog exists
-          S3Resource: !Sub 'arn:aws:s3:::${DataLakeBucketName}'  # Changed from ResourceArn to S3Resource
+          CatalogId: !Ref AWS::AccountId  # Account ID where S3 bucket is registered
+          S3Resource: !Sub 'arn:aws:s3:::${DataLakeBucketName}'
       Principal:
         DataLakePrincipalIdentifier: !Ref GlueCrawlerRoleArn
       Permissions:
