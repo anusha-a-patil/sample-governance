@@ -37,7 +37,9 @@ Parameters:
     Type: String
     Description: 'Code Build Role Which is used to build all CF reosurces'
     Default: "codebuild-sample-governance-service-role"     
-
+  lfpermissionsPath:
+    Type: String
+    Description: 'LF Permissions Stack S3 URL of the nested stack template'
 Resources:
   IAMRoles:
     Type: AWS::CloudFormation::Stack
@@ -74,7 +76,15 @@ Resources:
       Parameters:
         DataLakeBucketName: !Ref DataLakeBucket
         CodeBuildRole: !Ref CodeBuildRole
-        GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn        
+        GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn
+
+  LFPermissions:
+    Type: AWS::CloudFormation::Stack
+    Properties:
+      TemplateURL: !Ref lfpermissionsPath
+      Parameters:
+        DatabaseName: !GetAtt GlueDatabase.Outputs.DatabaseName
+        GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn   
 
 Outputs:
   DatabaseName:
