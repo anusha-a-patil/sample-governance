@@ -33,11 +33,9 @@ Resources:
           - [ "tpt", !Ref DomainName, !Ref EnvType, "landing", "crawler"]       
       Role: !Ref GlueCrawlerRoleArn
       DatabaseName: !Ref DatabaseName
-      Configuration: 
-          "LakeFormationConfiguration": {
-            "UseLakeFormationCredentials": true,
-            "AccountId": !Ref ProducerAccount
-          }      
+      LakeFormationConfiguration: 
+        UseLakeFormationCredentials: true,
+        AccountId: !Ref ProducerAccount       
       Targets:
         S3Targets:
            - Path: !Sub 's3://${S3Target}'      
