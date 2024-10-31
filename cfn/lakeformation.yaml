@@ -8,6 +8,9 @@ Parameters:
   CodeBuildRole:
     Type: String
     Description: 'Code Build Role Which is used to build all CF reosurces'    
+  GlueCrawlerRoleArn:
+    Type: String
+    Description: 'Code Build Role Which is used to build all CF reosurces'
 
 Resources:
   LakeFormationDataLakeSettings:
@@ -19,8 +22,23 @@ Resources:
       CreateDatabaseDefaultPermissions: []  # Empty list to uncheck default settings
       CreateTableDefaultPermissions: []  # Empty list to uncheck default settings
 
+#Registering DataLake Bucket in lakeFormation
   LakeFormationResource:
     Type: AWS::LakeFormation::Resource
     Properties:
-      ResourceArn: !Sub 'arn:aws:s3:::${DataLakeBucketName}'
+      ResourceArn: !Sub 'arn:aws:s3:::${DataLakeBucketName}' #Registering DataLake Bucket in the account
       UseServiceLinkedRole: true
+
+# Grant Data Location permissions to the crawler role
+DataLocationPermissions:
+    Type: AWS::LakeFormation::Permissions
+    DependsOn: LakeFormationResource    
+    Properties:
+      Resource:
+        DataLocationResource:
+          CatalogId: !Ref AWS::AccountId  # The account ID where the Data Catalog exists
+          S3Resource: !Sub 'arn:aws:s3:::${DataLakeBucketName}'  # Changed from ResourceArn to S3Resource
+      Principal:
+        DataLakePrincipalIdentifier: !Ref GlueCrawlerRoleArn
+      Permissions:
+        - DATA_LOCATION_ACCESS

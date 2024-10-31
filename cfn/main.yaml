@@ -74,6 +74,7 @@ Resources:
       Parameters:
         DataLakeBucketName: !Ref DataLakeBucket
         CodeBuildRole: !Ref CodeBuildRole
+        GlueCrawlerRoleArn: !GetAtt IAMRoles.Outputs.GlueCrawlerRoleArn        
 
 Outputs:
   DatabaseName:
