@@ -42,3 +42,5 @@ Resources:
         DataLakePrincipalIdentifier: !Ref GlueCrawlerRoleArn
       Permissions:
         - DATA_LOCATION_ACCESS
+      PermissionsWithGrantOption:
+        - DATA_LOCATION_ACCESS
